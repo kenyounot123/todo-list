@@ -6,18 +6,52 @@
     <title>To Do List</title>
   </head>
   <body>
+    <!-- Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="formModalLabel">New To Do</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="modal-body">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="title" type="text" placeholder="Title">
+              <label for="title">Title</label>
+            </div>
+            <div class="form-floating mb-3">
+              <textarea class="form-control" id="description" type="text" placeholder="Description"></textarea>
+              <label for="description">Description</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input class="form-control" id="date" type="date" placeholder="Date">
+              <label for="date">Due Date</label>
+            </div>
+            
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <main class="vh-100" style="background-color: #eee;">
       <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col col-lg-9 col-xl-7">
             <div class="card rounded-3 shadow">
-              <div class="card-body p-4">
-                <h1 class="text-center my-3 pb-3">To Do List</h1>
-                <div class="text-center">
-                  <button class="btn btn-primary">Add new task</button>
+              <div class="card-body p-5">
+                <h1 class="text-center my-3">To Do List</h1>
+                <div class="text-center m-4">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+                    Add New To Do
+                  </button>
                   <button class="btn btn-secondary">View all projects</button>
                 </div>
-
+                <button class="btn btn-info">
+                  <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> Current Project
+                </button>
                 <table class="table table-bordered mt-3 table-hover">
                   <thead>
                     <th>Title</th>
@@ -34,16 +68,6 @@
                     </tr>
                   </tbody>
                 </table>
-
-                <!-- <div class="card mt-4">
-                  <div class="card-body d-flex justify-content-between">
-                    <form>
-                      <input type="checkbox" class="form-check-input">
-                    </form>
-                    <div>Title</div>
-                    <div>Date Due</div>
-                  </div>
-                </div> -->
 
               </div>
             </div>
