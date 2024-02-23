@@ -9,6 +9,8 @@ import { todoFactory, parseToDos, addTodo, clearTodos } from './todoItems.js'
 const table = document.getElementById('todo-content')
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
+const allRows = document.querySelectorAll('row-btn')
+
 
 const item = todoFactory('title', 'description', '2/22/2024', 'completed');
 const item2 = todoFactory('title2', 'description', '2/22/2024', 'completed');
@@ -16,6 +18,8 @@ const item3 = todoFactory('title3', 'description', '2/22/2024', 'completed');
 console.log(item)
 console.log(item.description) 
 let listTodos = [item, item2, item3]
+
+
 
 createTodoBtn.addEventListener('click', (e) => {
   console.log(e)

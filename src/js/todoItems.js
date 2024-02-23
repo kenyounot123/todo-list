@@ -2,6 +2,8 @@ import { getFormData } from "./display";
 
 //Table 
 const table = document.getElementById('todo-content')
+const allRows = document.querySelectorAll('row-btn')
+
 //Form
 const title = document.getElementById('title');
 const description = document.getElementById('description')
@@ -17,10 +19,18 @@ const parseToDos = (arr) => {
   let allToDos = getTodosFromStorage(arr)
   allToDos.forEach((todo, index) => {
     const tableRow = document.createElement('tr')
-    tableRow.setAttribute('data', index)
+    tableRow.classList.add('row-btn')
+    tableRow.setAttribute('data-index', index)
+    tableRow.setAttribute('data-bs-target', '#todoModal')
+    tableRow.setAttribute('data-bs-toggle', 'modal')
     tableRow.innerHTML = loadTodo(todo)
     table.append(tableRow)
   });
+}
+
+const showToDo = (arr,row) => {
+  const index = row.getAttribute('data')
+  const todo = arr[index]
 }
 
 function getTodosFromStorage(arr) {
@@ -32,6 +42,7 @@ function getTodosFromStorage(arr) {
     return arr
   }
 }
+//Adding new todo through form submission
 function addTodo(arr) {
   const formValues = getFormData(title, description, date)
   arr.push(todoFactory(formValues.title, formValues.description, formValues.dueDate))
@@ -45,6 +56,7 @@ function loadTodo(todo) {
   `
 }
 
+//Clear the table so we can input new entries
 function clearTodos(div) {
   div.innerHTML = ''
 }
