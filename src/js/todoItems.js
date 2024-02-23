@@ -16,8 +16,7 @@ const todoFactory = (title, description, dueDate) => {
 
 //Take in a list of all todo objects and append it to the DOM 
 const parseToDos = (arr) => {
-  let allToDos = getTodosFromStorage(arr)
-  allToDos.forEach((todo, index) => {
+  arr.forEach((todo, index) => {
     const tableRow = document.createElement('tr')
     tableRow.classList.add('row-btn')
     tableRow.setAttribute('data-index', index)
@@ -28,24 +27,27 @@ const parseToDos = (arr) => {
   });
 }
 
-const selectedToDo = (arr,index) => {
+const selectedToDo = (arr,row) => {
+  const index = row.getAttribute('data-index')
   const todo = arr[index]
   return todo
 }
 
-function getTodosFromStorage(arr) {
-  //If storage has array then return it 
-  //If no existing array then return none
-  if (arr.length === 0) {
-    return 
-  } else {
-    return arr
-  }
-}
+// function getTodosFromStorage(arr) {
+//   //If storage has array then return it 
+//   //If no existing array then return none
+//   if (arr.length === 0) {
+//     return arr
+//   } else {
+//     return arr
+//   }
+// }
 //Adding new todo through form submission
 function addTodo(arr) {
   const formValues = getFormData(title, description, date)
-  arr.push(todoFactory(formValues.title, formValues.description, formValues.dueDate))
+  const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate)
+  arr.push(newTodo)
+  populateStorage('todos', JSON.stringify(arr))
 }
 
 function loadTodo(todo) {
@@ -60,5 +62,9 @@ function loadTodo(todo) {
 function clearTodos(div) {
   div.innerHTML = ''
 }
+function populateStorage(key,value) {
+  localStorage.setItem(key,value)
+}
+
 
 export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo }

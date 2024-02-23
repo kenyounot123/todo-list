@@ -10,34 +10,35 @@ const table = document.getElementById('todo-content')
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const allRows = document.querySelectorAll('row-btn')
+//Modals
+const todoModal = document.getElementById('todoModal')
 
 
 const item = todoFactory('title', 'description', '2/22/2024', 'completed');
 const item2 = todoFactory('title2', 'description', '2/22/2024', 'completed');
 const item3 = todoFactory('title3', 'description', '2/22/2024', 'completed');
-let listTodos = [item, item2, item3]
+// let todos = [item, item2, item3]
 
-const todoModal = document.getElementById('todoModal')
+//Web Storage API
+const todos = JSON.parse(localStorage.getItem('todos')) || [];
+
 if (todoModal) {
   todoModal.addEventListener('show.bs.modal', event => {
     // Button that triggered the modal
     const row = event.relatedTarget
-    // Extract info from data-bs-* attributes
-    const index = row.getAttribute('data-index')
     // Update the modal's content.
     const modalTitle = todoModal.querySelector('.modal-title')
     const modalBody = todoModal.querySelector('.modal-body')
-    console.log(listTodos)
-    console.log(selectedToDo(listTodos, index))
-    modalTitle.textContent = selectedToDo(listTodos,index).title
-    modalBody.textContent = selectedToDo(listTodos,index).description
+    modalTitle.textContent = selectedToDo(todos,row).title
+    modalBody.textContent = selectedToDo(todos,row).description
   })
 }
 
 createTodoBtn.addEventListener('click', (e) => {
-  addTodo(listTodos)
+  console.log(todos)
+  addTodo(todos)
   clearTodos(table)
-  parseToDos(listTodos)
+  parseToDos(todos)
 })
 
-parseToDos(listTodos)
+parseToDos(todos)
