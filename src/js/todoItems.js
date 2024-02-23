@@ -28,9 +28,9 @@ const parseToDos = (arr) => {
   });
 }
 
-const showToDo = (arr,row) => {
-  const index = row.getAttribute('data')
+const selectedToDo = (arr,index) => {
   const todo = arr[index]
+  return todo
 }
 
 function getTodosFromStorage(arr) {
@@ -61,4 +61,4 @@ function clearTodos(div) {
   div.innerHTML = ''
 }
 
-export { todoFactory, parseToDos, addTodo, clearTodos }
+export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo }
