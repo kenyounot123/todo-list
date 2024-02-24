@@ -27,8 +27,10 @@ if (todoModal) {
     // Update the modal's content.
     const modalTitle = todoModal.querySelector('.modal-title')
     const modalBody = todoModal.querySelector('.modal-body')
+    const modalDueDate = todoModal.querySelector('#modalDueDate')
     modalTitle.textContent = selectedToDo(todos,row).title
     modalBody.textContent = selectedToDo(todos,row).description
+    modalDueDate.textContent = `Due Date: ${selectedToDo(todos, row).dueDate}`
   })
 }
 
@@ -37,5 +39,4 @@ createTodoBtn.addEventListener('click', (e) => {
   clearTodos(table)
   parseToDos(todos)
 })
-
 parseToDos(todos)

@@ -1,8 +1,7 @@
-import { getFormData } from "./display";
+import { getFormData, formatDate } from "./display";
 
 //Table 
 const table = document.getElementById('todo-content')
-const allRows = document.querySelectorAll('row-btn')
 
 //Form
 const title = document.getElementById('title');
@@ -46,7 +45,7 @@ function loadTodo(todo) {
   return `
     <td>${todo.title}</td>
     <td>${todo.dueDate}</td>
-    <td>${todo.status}</td>
+    <td> in ${formatDate(todo.dueDate)}</td>
   `
 }
 
