@@ -3,8 +3,8 @@ import * as bootstrap from 'bootstrap'
 // Import our custom CSS
 import '../scss/styles.scss'
 
-import { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo } from './todoItems.js'
-import { formatDistance, subDays } from "date-fns";
+import { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo } from './todoItems.js'
+import { formatDistance } from "date-fns";
 //Table 
 const table = document.getElementById('todo-content')
 //Buttons 
@@ -18,7 +18,7 @@ const item2 = todoFactory('title2', 'description', '2/22/2024', 'completed');
 const item3 = todoFactory('title3', 'description', '2/22/2024', 'completed');
 
 //Web Storage API
-const todos = JSON.parse(localStorage.getItem('todos')) || [];
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
 if (todoModal) {
   todoModal.addEventListener('show.bs.modal', event => {
@@ -28,6 +28,13 @@ if (todoModal) {
     const modalTitle = todoModal.querySelector('.modal-title')
     const modalBody = todoModal.querySelector('.modal-body')
     const modalDueDate = todoModal.querySelector('#modalDueDate')
+    const deleteTodoBtn = document.getElementById('deleteTodo')
+    console.log(todos)
+    deleteTodoBtn.addEventListener('click', () => {
+      deleteTodo(todos, row)
+      clearTodos(table)
+      parseToDos(todos)
+    })
     modalTitle.textContent = selectedToDo(todos,row).title
     modalBody.textContent = selectedToDo(todos,row).description
     modalDueDate.textContent = `Due Date: ${selectedToDo(todos, row).dueDate}`

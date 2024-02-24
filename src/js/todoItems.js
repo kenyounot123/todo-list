@@ -1,4 +1,4 @@
-import { getFormData, formatDate } from "./display";
+import { getFormData, formatDate, clearFormInputs } from "./display";
 
 //Table 
 const table = document.getElementById('todo-content')
@@ -27,10 +27,13 @@ const parseToDos = (arr) => {
 }
 
 const selectedToDo = (arr,row) => {
-  const index = row.getAttribute('data-index')
+  const index = selectedTodoIndex(row)
   const todo = arr[index]
   return todo
 }
+const selectedTodoIndex = (row) => {
+  return row.getAttribute('data-index')
+} 
 
 //Adding new todo through form submission
 function addTodo(arr) {
@@ -38,6 +41,7 @@ function addTodo(arr) {
   const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate)
   arr.push(newTodo)
   populateStorage('todos', JSON.stringify(arr))
+  clearFormInputs()
 }
 
 //Load html for todo   
@@ -49,13 +53,19 @@ function loadTodo(todo) {
   `
 }
 
+function deleteTodo(arr, row) {
+  const index = selectedTodoIndex(row)
+  arr.splice(index, 1)
+  populateStorage('todos', JSON.stringify(arr))
+}
 //Clear the table so we can input new entries
 function clearTodos(div) {
   div.innerHTML = ''
 }
+//Add to local storage
 function populateStorage(key,value) {
   localStorage.setItem(key,value)
 }
 
 
-export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo }
+export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo }
