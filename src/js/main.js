@@ -4,12 +4,11 @@ import * as bootstrap from 'bootstrap'
 import '../scss/styles.scss'
 
 import { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo } from './todoItems.js'
-
+import { formatDistance, subDays } from "date-fns";
 //Table 
 const table = document.getElementById('todo-content')
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
-const allRows = document.querySelectorAll('row-btn')
 //Modals
 const todoModal = document.getElementById('todoModal')
 
@@ -17,7 +16,6 @@ const todoModal = document.getElementById('todoModal')
 const item = todoFactory('title', 'description', '2/22/2024', 'completed');
 const item2 = todoFactory('title2', 'description', '2/22/2024', 'completed');
 const item3 = todoFactory('title3', 'description', '2/22/2024', 'completed');
-// let todos = [item, item2, item3]
 
 //Web Storage API
 const todos = JSON.parse(localStorage.getItem('todos')) || [];
@@ -35,7 +33,6 @@ if (todoModal) {
 }
 
 createTodoBtn.addEventListener('click', (e) => {
-  console.log(todos)
   addTodo(todos)
   clearTodos(table)
   parseToDos(todos)

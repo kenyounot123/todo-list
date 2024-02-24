@@ -33,15 +33,6 @@ const selectedToDo = (arr,row) => {
   return todo
 }
 
-// function getTodosFromStorage(arr) {
-//   //If storage has array then return it 
-//   //If no existing array then return none
-//   if (arr.length === 0) {
-//     return arr
-//   } else {
-//     return arr
-//   }
-// }
 //Adding new todo through form submission
 function addTodo(arr) {
   const formValues = getFormData(title, description, date)
@@ -50,6 +41,7 @@ function addTodo(arr) {
   populateStorage('todos', JSON.stringify(arr))
 }
 
+//Load html for todo   
 function loadTodo(todo) {
   return `
     <td>${todo.title}</td>
