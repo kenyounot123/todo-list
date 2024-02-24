@@ -4,7 +4,9 @@ import * as bootstrap from 'bootstrap'
 import '../scss/styles.scss'
 
 import { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, markTodo, todoStatus } from './todoItems.js'
+import { findRowAndIndexOfButton } from './display.js';
 import { formatDistance } from "date-fns";
+
 //Table 
 const table = document.getElementById('todo-content')
 //Buttons 
@@ -26,8 +28,11 @@ if (todoModal) {
   todoModal.addEventListener('show.bs.modal', event => {
     // Button that triggered the modal
     const row = event.relatedTarget
+    const todoIndex = row.getAttribute('data-index')
     // Todo for selected row that triggerd the modal 
     const todo = selectedToDo(todos, row)
+    console.log(todo)
+    console.log(row)
     // Update the modal's content.
     const modalTitle = todoModal.querySelector('.modal-title')
     const modalBody = todoModal.querySelector('.modal-body')
@@ -49,19 +54,24 @@ if (todoModal) {
     modalTitle.textContent = `${todo.title} (${todoStatus(todo)})` 
     modalBody.textContent = todo.description
     modalDueDate.textContent = `Due Date: ${todo.dueDate}`
-    //Add event listeners for modal buttons
-    deleteTodoBtn.addEventListener('click', () => {
-      deleteTodo(todos, row)
-      clearTodos(table)
-      parseToDos(todos)
-    })
-    completeTodoBtn.addEventListener('click', () => {
-      markTodo(todos, row, todo.status)
-    })
+    // Give data attributes to modal buttons
+    deleteTodoBtn.setAttribute('data-index', todoIndex)
+    completeTodoBtn.setAttribute('data-index', todoIndex)
   })
 }
-
-createTodoBtn.addEventListener('click', (e) => {
+//Add event listeners for modal buttons
+deleteTodoBtn.addEventListener('click', () => {
+  const { row, rowIndex } = findRowAndIndexOfButton(deleteTodoBtn)
+  deleteTodo(todos, row)
+  clearTodos(table)
+  parseToDos(todos)
+})
+completeTodoBtn.addEventListener('click', () => {
+  const { row, rowIndex } = findRowAndIndexOfButton(deleteTodoBtn)
+  const todo = todos[rowIndex]
+  markTodo(todos, row, todo.status)
+})
+createTodoBtn.addEventListener('click', () => {
   addTodo(todos)
   clearTodos(table)
   parseToDos(todos)

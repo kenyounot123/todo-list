@@ -1,4 +1,4 @@
-import { formatDistance, subDays } from "date-fns";
+import { formatDistance } from "date-fns";
 //Return an object containing values for each form input
 function getFormData(title, description, date) {
   const todoTitle = title.value
@@ -9,6 +9,12 @@ function getFormData(title, description, date) {
     description: todoDescription,
     dueDate: todoDueDate
   }
+}
+function findRowAndIndexOfButton(button) {
+  const allRows = document.querySelectorAll('tr.row-btn');
+  const rowIndex = button.getAttribute('data-index');
+  const row = allRows[rowIndex];
+  return { row, rowIndex };
 }
 // To get the due date as a string
 function formatDate(dueDate) {
@@ -33,4 +39,4 @@ function clearFormInputs() {
   textArea.value = '';
 }
 
-export { getFormData, formatDate, clearFormInputs }
+export { getFormData, formatDate, clearFormInputs, findRowAndIndexOfButton }
