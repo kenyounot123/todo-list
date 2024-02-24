@@ -77,7 +77,6 @@ function uncross(row) {
 function deleteTodo(arr, row) {
   const index = selectedTodoIndex(row)
   arr.splice(index, 1)
-  console.log(arr)
   populateStorage('todos', JSON.stringify(arr))
 }
 //Clear the table so we can input new entries

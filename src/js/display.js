@@ -10,6 +10,7 @@ function getFormData(title, description, date) {
     dueDate: todoDueDate
   }
 }
+//Get row and index given a button
 function findRowAndIndexOfButton(button) {
   const allRows = document.querySelectorAll('tr.row-btn');
   const rowIndex = button.getAttribute('data-index');
@@ -18,17 +19,30 @@ function findRowAndIndexOfButton(button) {
 }
 // To get the due date as a string
 function formatDate(dueDate) {
+  // Get the current date in the local timezone
   const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentDay = currentDate.getDate();
-  const formattedCurrentDate = `${currentYear}-` +`${currentMonth}-` + `${currentDay}` 
+
+  // Convert the due date string to a Date object
+  const dueDateObject = new Date(dueDate);
+
+  // Calculate the timezone offset in minutes between the local timezone and UTC
+  const timezoneOffset = currentDate.getTimezoneOffset();
+
+  // Adjust the due date to the local timezone by adding the offset
+  const localDueDate = new Date(dueDateObject.getTime() + (timezoneOffset * 60 * 1000));
+
+  // Format the local due date and current date as strings
+  const formattedLocalDueDate = localDueDate.toISOString();
+  const formattedCurrentDate = currentDate.toISOString();
+
+  // Calculate the distance between the due date and current date
   const result = formatDistance(
-    dueDate,
-    formattedCurrentDate,
+    new Date(formattedLocalDueDate), // Pass the local due date as a Date object
+    new Date(formattedCurrentDate), // Pass the current date as a Date object
     { addSuffix: true }
-  )
-  return result
+  );
+
+  return result;
 }
 function clearFormInputs() {
   const inputs = document.querySelectorAll('input')

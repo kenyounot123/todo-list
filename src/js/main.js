@@ -31,8 +31,6 @@ if (todoModal) {
     const todoIndex = row.getAttribute('data-index')
     // Todo for selected row that triggerd the modal 
     const todo = selectedToDo(todos, row)
-    console.log(todo)
-    console.log(row)
     // Update the modal's content.
     const modalTitle = todoModal.querySelector('.modal-title')
     const modalBody = todoModal.querySelector('.modal-body')
