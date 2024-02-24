@@ -56,14 +56,22 @@ function loadTodo(todo) {
   `
 }
 
-function completeTodo(arr, row) {
+function markTodo(arr, row, status) {
   const todo = selectedToDo(arr, row)
-  todo.status = true
+  todo.status = status
+  if (!status) {
+    crossOut(row)
+  } else {
+    uncross(row)
+  }
   populateStorage('todos', JSON.stringify(arr))
-  crossOut(row)
 }
+
 function crossOut(row) {
   row.classList.add('crossed-out')
+}
+function uncross(row) {
+  row.classList.remove('crossed-out')
 }
 //Delete todo
 function deleteTodo(arr, row) {
@@ -79,6 +87,13 @@ function clearTodos(div) {
 function populateStorage(key,value) {
   localStorage.setItem(key,value)
 }
+function todoStatus(todo) {
+  if (todo.status === true) {
+    return 'Completed'
+  } else {
+    return 'Incomplete'
+  }
+}
 
 
-export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, completeTodo }
+export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, markTodo, todoStatus }

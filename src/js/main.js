@@ -3,7 +3,7 @@ import * as bootstrap from 'bootstrap'
 // Import our custom CSS
 import '../scss/styles.scss'
 
-import { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, completeTodo } from './todoItems.js'
+import { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, markTodo, todoStatus } from './todoItems.js'
 import { formatDistance } from "date-fns";
 //Table 
 const table = document.getElementById('todo-content')
@@ -26,13 +26,29 @@ if (todoModal) {
   todoModal.addEventListener('show.bs.modal', event => {
     // Button that triggered the modal
     const row = event.relatedTarget
+    // Todo for selected row that triggerd the modal 
+    const todo = selectedToDo(todos, row)
     // Update the modal's content.
     const modalTitle = todoModal.querySelector('.modal-title')
     const modalBody = todoModal.querySelector('.modal-body')
     const modalDueDate = todoModal.querySelector('#modalDueDate')
-    modalTitle.textContent = selectedToDo(todos,row).title
-    modalBody.textContent = selectedToDo(todos,row).description
-    modalDueDate.textContent = `Due Date: ${selectedToDo(todos, row).dueDate}`
+    // Dynamically create and style modal buttons/text
+    if (todo.status === true) {
+      completeTodoBtn.classList.remove('btn-outline-success')
+      completeTodoBtn.classList.add('btn-outline-danger')
+      completeTodoBtn.textContent = "Mark incomplete"
+      modalDueDate.classList.remove('text-danger')
+      modalDueDate.classList.add('text-success')
+    } else {
+      completeTodoBtn.classList.remove('btn-outline-danger')
+      completeTodoBtn.classList.add('btn-outline-success')
+      completeTodoBtn.textContent = "Completed"
+      modalDueDate.classList.remove('text-success')
+      modalDueDate.classList.add('text-danger')
+    }
+    modalTitle.textContent = `${todo.title} (${todoStatus(todo)})` 
+    modalBody.textContent = todo.description
+    modalDueDate.textContent = `Due Date: ${todo.dueDate}`
     //Add event listeners for modal buttons
     deleteTodoBtn.addEventListener('click', () => {
       deleteTodo(todos, row)
@@ -40,7 +56,7 @@ if (todoModal) {
       parseToDos(todos)
     })
     completeTodoBtn.addEventListener('click', () => {
-      completeTodo(todos, row)
+      markTodo(todos, row, todo.status)
     })
   })
 }
