@@ -19,7 +19,8 @@ function formatDate(dueDate) {
   const formattedCurrentDate = `${currentYear}-` +`${currentMonth}-` + `${currentDay}` 
   const result = formatDistance(
     dueDate,
-    formattedCurrentDate
+    formattedCurrentDate,
+    { addSuffix: true }
   )
   return result
 }

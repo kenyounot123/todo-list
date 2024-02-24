@@ -3,3 +3,8 @@
 #folder-icon {
   width: 20px;
 }
+.crossed-out {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  color: black; /* Color for crossed-out text */
+}

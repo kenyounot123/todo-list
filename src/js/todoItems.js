@@ -10,7 +10,7 @@ const date = document.getElementById('date')
 
 //Todo Factory 
 const todoFactory = (title, description, dueDate) => {
-  return { title, description, dueDate, status: false}
+  return { title, description, dueDate, status: false }
 }
 
 //Take in a list of all todo objects and append it to the DOM 
@@ -18,6 +18,9 @@ const parseToDos = (arr) => {
   arr.forEach((todo, index) => {
     const tableRow = document.createElement('tr')
     tableRow.classList.add('row-btn')
+    if (todo.status === true) {
+      tableRow.classList.add('crossed-out')
+    }
     tableRow.setAttribute('data-index', index)
     tableRow.setAttribute('data-bs-target', '#todoModal')
     tableRow.setAttribute('data-bs-toggle', 'modal')
@@ -49,10 +52,20 @@ function loadTodo(todo) {
   return `
     <td>${todo.title}</td>
     <td>${todo.dueDate}</td>
-    <td> in ${formatDate(todo.dueDate)}</td>
+    <td class="status">${formatDate(todo.dueDate)}</td>
   `
 }
 
+function completeTodo(arr, row) {
+  const todo = selectedToDo(arr, row)
+  todo.status = true
+  populateStorage('todos', JSON.stringify(arr))
+  crossOut(row)
+}
+function crossOut(row) {
+  row.classList.add('crossed-out')
+}
+//Delete todo
 function deleteTodo(arr, row) {
   const index = selectedTodoIndex(row)
   arr.splice(index, 1)
@@ -68,4 +81,4 @@ function populateStorage(key,value) {
 }
 
 
-export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo }
+export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, completeTodo }
