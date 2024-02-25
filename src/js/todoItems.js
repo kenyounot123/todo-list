@@ -1,12 +1,5 @@
 import { getFormData, formatDate, clearFormInputs, datePassed } from "./miscellaneous";
 
-//Table 
-// const table = document.getElementById('todo-content')
-
-//Form
-const title = document.getElementById('title');
-const description = document.getElementById('description')
-const date = document.getElementById('date')
 
 //Todo Factory 
 const todoFactory = (title, description, dueDate) => {
@@ -136,6 +129,56 @@ function todoStatus(todo) {
     return 'Incomplete'
   }
 }
+// Function to update modal content for viewing a todo
+const updateViewModalContent = (modal, todo, todoIndex) => {
+  const modalTitle = modal.querySelector('.modal-title');
+  const modalBody = modal.querySelector('.modal-body');
+  const modalDueDate = modal.querySelector('#modalDueDate');
+
+  modalTitle.textContent = `${todo.title} (${todoStatus(todo)})`;
+  modalBody.textContent = todo.description;
+  modalDueDate.textContent = `Due Date: ${todo.dueDate}`;
+
+  const completeTodoBtn = modal.querySelector('#completeTodo');
+  completeTodoBtn.setAttribute('data-index', todoIndex);
+
+  const deleteTodoBtn = modal.querySelector('#deleteTodo');
+  deleteTodoBtn.setAttribute('data-index', todoIndex);
+
+  const editBtn = modal.querySelector('#editTodo');
+  editBtn.setAttribute('data-index', todoIndex);
+
+  if (todo.status) {
+    completeTodoBtn.classList.remove('btn-outline-success');
+    completeTodoBtn.classList.add('btn-outline-danger');
+    completeTodoBtn.textContent = "Mark incomplete";
+    modalDueDate.classList.remove('text-danger');
+    modalDueDate.classList.add('text-success');
+  } else {
+    completeTodoBtn.classList.remove('btn-outline-danger');
+    completeTodoBtn.classList.add('btn-outline-success');
+    completeTodoBtn.textContent = "Completed";
+    modalDueDate.classList.remove('text-success');
+    modalDueDate.classList.add('text-danger');
+  }
+};
+
+// Function to update modal content for editing a todo
+const updateEditModalFormContent = (modal, todo, todoIndex) => {
+  const todoTitleInput = modal.querySelector('#title');
+  const todoDescriptionInput = modal.querySelector('#description');
+  const todoDueDateInput = modal.querySelector('#date');
+  const modalTitle = modal.querySelector('#formModalLabel');
+  const formSubmitBtn = modal.querySelector('#form-submit');
+
+  formSubmitBtn.textContent = 'Update';
+  formSubmitBtn.setAttribute('data-index', todoIndex);
+  modalTitle.textContent = 'Edit Task';
+  todoTitleInput.value = todo.title;
+  todoDescriptionInput.value = todo.description;
+  todoDueDateInput.value = todo.dueDate;
+};
 
 
-export { todoFactory, parseToDos, submitTodo, selectedToDo, deleteTodo, markTodo, todoStatus }
+
+export { todoFactory, parseToDos, submitTodo, selectedToDo, deleteTodo, markTodo, todoStatus, updateEditModalFormContent, updateViewModalContent }
