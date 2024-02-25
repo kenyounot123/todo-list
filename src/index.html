@@ -59,7 +59,7 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col col-lg-9 col-xl-7">
             <div class="card rounded-3 shadow">
-              <div class="card-body p-5">
+              <div id="todo-list-main-content" class="card-body p-5">
                 <h1 class="text-center my-3">To Do List</h1>
                 <div class="text-center m-4">
                   <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
@@ -70,16 +70,6 @@
                 <button class="btn btn-info">
                   <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> Current Project
                 </button>
-                <table class="table table-bordered mt-3 table-hover">
-                  <thead>
-                    <th>Title</th>
-                    <th>Date Due</th>
-                    <th>Status</th>
-                  </thead>
-                  <tbody id="todo-content" class="table-group-divider">
-                  </tbody>
-                </table>
-
               </div>
             </div>
           </div>

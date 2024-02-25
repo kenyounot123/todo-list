@@ -1,7 +1,7 @@
-import { getFormData, formatDate, clearFormInputs } from "./display";
+import { getFormData, formatDate, clearFormInputs } from "./miscellaneous";
 
 //Table 
-const table = document.getElementById('todo-content')
+// const table = document.getElementById('todo-content')
 
 //Form
 const title = document.getElementById('title');
@@ -15,19 +15,29 @@ const todoFactory = (title, description, dueDate) => {
 
 //Take in a list of all todo objects and append it to the DOM 
 const parseToDos = (arr) => {
-  arr.forEach((todo, index) => {
-    const tableRow = document.createElement('tr')
-    tableRow.classList.add('row-btn')
-    if (todo.status === true) {
-      tableRow.classList.add('crossed-out')
-    }
-    tableRow.setAttribute('data-index', index)
-    tableRow.setAttribute('data-bs-target', '#todoModal')
-    tableRow.setAttribute('data-bs-toggle', 'modal')
-    tableRow.innerHTML = loadTodo(todo)
-    table.append(tableRow)
-  });
+  clearTodosIfNeeded();
+  appendTodoRows(arr);
+};
+
+function createTodoRow(todo, index) {
+  const tableRow = document.createElement('tr')
+  tableRow.classList.add('row-btn')
+  if (todo.status === true) {
+    tableRow.classList.add('crossed-out')
+  }
+  tableRow.setAttribute('data-index', index)
+  tableRow.setAttribute('data-bs-target', '#todoModal')
+  tableRow.setAttribute('data-bs-toggle', 'modal')
+  tableRow.innerHTML = loadTodo(todo)
+  return tableRow
 }
+const appendTodoRows = (arr) => {
+  const table = document.getElementById('todo-content');
+  arr.forEach((todo, index) => {
+    const tableRow = createTodoRow(todo, index);
+    table.appendChild(tableRow);
+  });
+};
 
 const selectedToDo = (arr,row) => {
   const index = selectedTodoIndex(row)
@@ -52,10 +62,24 @@ function loadTodo(todo) {
   return `
     <td>${todo.title}</td>
     <td>${todo.dueDate}</td>
-    <td class="status">${formatDate(todo.dueDate)}</td>
+    <td>${formatDate(todo.dueDate)}</td>
   `
 }
-
+//Load html for table creation 
+function loadTable() {
+  return `
+  <table class="table table-bordered mt-3 table-hover">
+    <thead>
+      <th>Title</th>
+      <th>Date Due</th>
+      <th>Status</th>
+    </thead>
+    <tbody id="todo-content" class="table-group-divider">
+    </tbody>
+  </table>
+  `
+}
+//Change status of todo
 function markTodo(arr, row, status) {
   if (!status) {
     arr[selectedTodoIndex(row)].status = true
@@ -66,7 +90,7 @@ function markTodo(arr, row, status) {
   }
   populateStorage('todos', JSON.stringify(arr))
 }
-
+//Table UI
 function crossOut(row) {
   row.classList.add('crossed-out')
 }
@@ -83,6 +107,15 @@ function deleteTodo(arr, row) {
 function clearTodos(div) {
   div.innerHTML = ''
 }
+function clearTodosIfNeeded() {
+  const table = document.getElementById('todo-content');
+  if (table !== null) {
+    clearTodos(table);
+  } else {
+    const contentContainer = document.getElementById('todo-list-main-content');
+    contentContainer.innerHTML += loadTable();
+  }
+};
 //Add to local storage
 function populateStorage(key,value) {
   localStorage.setItem(key,value)
@@ -96,4 +129,4 @@ function todoStatus(todo) {
 }
 
 
-export { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, markTodo, todoStatus }
+export { todoFactory, parseToDos, addTodo, selectedToDo, deleteTodo, markTodo, todoStatus }

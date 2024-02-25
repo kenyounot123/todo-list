@@ -3,23 +3,18 @@ import * as bootstrap from 'bootstrap'
 // Import our custom CSS
 import '../scss/styles.scss'
 
-import { todoFactory, parseToDos, addTodo, clearTodos, selectedToDo, deleteTodo, markTodo, todoStatus } from './todoItems.js'
-import { findRowAndIndexOfButton } from './display.js';
+import { parseToDos, addTodo, selectedToDo, deleteTodo, markTodo, todoStatus } from './todoItems.js'
+import { findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
 
 //Table 
-const table = document.getElementById('todo-content')
+// const table = document.getElementById('todo-content')
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
 const completeTodoBtn = document.getElementById('completeTodo')
 //Modals
 const todoModal = document.getElementById('todoModal')
-
-
-const item = todoFactory('title', 'description', '2/22/2024', 'completed');
-const item2 = todoFactory('title2', 'description', '2/22/2024', 'completed');
-const item3 = todoFactory('title3', 'description', '2/22/2024', 'completed');
 
 //Web Storage API
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
@@ -61,7 +56,6 @@ if (todoModal) {
 deleteTodoBtn.addEventListener('click', () => {
   const { row, rowIndex } = findRowAndIndexOfButton(deleteTodoBtn)
   deleteTodo(todos, row)
-  clearTodos(table)
   parseToDos(todos)
 })
 completeTodoBtn.addEventListener('click', () => {
@@ -71,7 +65,6 @@ completeTodoBtn.addEventListener('click', () => {
 })
 createTodoBtn.addEventListener('click', () => {
   addTodo(todos)
-  clearTodos(table)
   parseToDos(todos)
 })
 parseToDos(todos)
