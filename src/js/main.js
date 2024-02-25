@@ -16,6 +16,7 @@ const completeTodoBtn = document.getElementById('completeTodo')
 const editBtn = document.getElementById('editTodo')
 //Modals
 const todoModal = document.getElementById('todoModal')
+const formModal = document.getElementById('formModal')
 
 //Web Storage API
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
@@ -66,10 +67,31 @@ completeTodoBtn.addEventListener('click', () => {
   markTodo(todos, row, todo.status)
 })
 createTodoBtn.addEventListener('click', () => {
-  submitTodo(todos)
+  const index = createTodoBtn.getAttribute('data-index')
+  submitTodo(todos, index)
   parseToDos(todos)
 })
-editBtn.addEventListener('click', () => {
-  console.log('hi')
-})
+formModal.addEventListener('show.bs.modal', event => {
+  //Button that triggered the modal
+  const btn = event.relatedTarget
+  const todoIndex = btn.getAttribute('data-index')
+  if (todoIndex) {
+    //Get todo 
+    let todo = todos[todoIndex]
+    // Update the modal's content.
+    const todoTitleInput = formModal.querySelector('#title')
+    const todoDescriptionInput = formModal.querySelector('#description')
+    const todoDueDateInput = formModal.querySelector('#date')
+    const modalTitle = formModal.querySelector('#formModalLabel')
+    const formSubmitBtn = formModal.querySelector('#form-submit')
+
+    formSubmitBtn.textContent = 'Update'
+    formSubmitBtn.setAttribute('data-index', todoIndex)
+    modalTitle.textContent = 'Edit Task'
+    todoTitleInput.value = todo.title
+    todoDescriptionInput.value = todo.description
+    todoDueDateInput.value = todo.dueDate
+  }
+});
+
 parseToDos(todos)
