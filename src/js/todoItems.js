@@ -1,4 +1,4 @@
-import { getFormData, formatDate, clearFormInputs } from "./miscellaneous";
+import { getFormData, formatDate, clearFormInputs, datePassed } from "./miscellaneous";
 
 //Table 
 // const table = document.getElementById('todo-content')
@@ -24,6 +24,9 @@ function createTodoRow(todo, index) {
   tableRow.classList.add('row-btn')
   if (todo.status === true) {
     tableRow.classList.add('crossed-out')
+    tableRow.classList.add('table-success')
+  } else if (datePassed(new Date(todo.dueDate))) {
+    tableRow.classList.add('table-danger')
   }
   tableRow.setAttribute('data-index', index)
   tableRow.setAttribute('data-bs-target', '#todoModal')
@@ -49,10 +52,16 @@ const selectedTodoIndex = (row) => {
 } 
 
 //Adding new todo through form submission
-function addTodo(arr) {
+function submitTodo(arr, index = null) {
   const formValues = getFormData(title, description, date)
-  const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate)
-  arr.push(newTodo)
+  if (arr[index] !== undefined) { 
+    arr[index].title = formValues.title
+    arr[index].description = formValues.description
+    arr[index].dueDate = formValues.dueDate
+  } else {
+    const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate)
+    arr.push(newTodo)
+  }
   populateStorage('todos', JSON.stringify(arr))
   clearFormInputs()
 }
@@ -129,4 +138,4 @@ function todoStatus(todo) {
 }
 
 
-export { todoFactory, parseToDos, addTodo, selectedToDo, deleteTodo, markTodo, todoStatus }
+export { todoFactory, parseToDos, submitTodo, selectedToDo, deleteTodo, markTodo, todoStatus }

@@ -3,7 +3,7 @@ import * as bootstrap from 'bootstrap'
 // Import our custom CSS
 import '../scss/styles.scss'
 
-import { parseToDos, addTodo, selectedToDo, deleteTodo, markTodo, todoStatus } from './todoItems.js'
+import { parseToDos, selectedToDo, deleteTodo, markTodo, todoStatus, submitTodo } from './todoItems.js'
 import { findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
 
@@ -13,6 +13,7 @@ import { formatDistance } from "date-fns";
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
 const completeTodoBtn = document.getElementById('completeTodo')
+const editBtn = document.getElementById('editTodo')
 //Modals
 const todoModal = document.getElementById('todoModal')
 
@@ -50,6 +51,7 @@ if (todoModal) {
     // Give data attributes to modal buttons
     deleteTodoBtn.setAttribute('data-index', todoIndex)
     completeTodoBtn.setAttribute('data-index', todoIndex)
+    editBtn.setAttribute('data-index', todoIndex)
   })
 }
 //Add event listeners for modal buttons
@@ -64,7 +66,10 @@ completeTodoBtn.addEventListener('click', () => {
   markTodo(todos, row, todo.status)
 })
 createTodoBtn.addEventListener('click', () => {
-  addTodo(todos)
+  submitTodo(todos)
   parseToDos(todos)
+})
+editBtn.addEventListener('click', () => {
+  console.log('hi')
 })
 parseToDos(todos)

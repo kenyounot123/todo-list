@@ -44,6 +44,10 @@ function formatDate(dueDate) {
 
   return result;
 }
+function datePassed(date) {
+  const currentDate = new Date()
+  return date < currentDate;
+}
 function clearFormInputs() {
   const inputs = document.querySelectorAll('input')
   inputs.forEach(input => {
@@ -53,4 +57,4 @@ function clearFormInputs() {
   textArea.value = '';
 }
 
-export { getFormData, formatDate, clearFormInputs, findRowAndIndexOfButton }
+export { getFormData, formatDate, clearFormInputs, findRowAndIndexOfButton, datePassed }
