@@ -3,12 +3,79 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap w/ Webpack</title>
+    <title>To Do List</title>
   <script defer src="main.js"></script></head>
   <body>
-    <div class="container py-4 px-3 mx-auto">
-      <h1>Hello, Bootstrap and Webpack!</h1>
-      <button class="btn btn-primary">Primary button</button>
+    <!-- Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="formModalLabel">New Task</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="modal-body">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="title" type="text" placeholder="Title">
+              <label for="title">Title</label>
+            </div>
+            <div class="form-floating mb-3">
+              <textarea class="form-control" id="description" type="text" placeholder="Description"></textarea>
+              <label for="description">Description</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input class="form-control" id="date" type="date" placeholder="Date">
+              <label for="date">Due Date</label>
+            </div>
+            
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="form-submit" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="modal fade" id="todoModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <div id="modalDueDate" class="fw-bold flex-grow-1"></div>
+            <button id="editTodo" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formModal">Edit</button>
+            <button id="deleteTodo" type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+            <button type="button" id="completeTodo" class="btn" data-bs-dismiss="modal"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main class="vh-100" style="background-color: #eee;">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-lg-9 col-xl-7">
+            <div class="card rounded-3 shadow">
+              <div id="todo-list-main-content" class="card-body p-5">
+                <h1 class="text-center my-3">To Do List</h1>
+                <div class="text-center m-4">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+                    Add New To Do
+                  </button>
+                  <button id="viewProject" class="btn btn-secondary">View all projects</button>
+                </div>
+                <button class="btn btn-info">
+                  <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> Current Project
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>

@@ -11,6 +11,7 @@ import { formatDistance } from "date-fns";
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
 const completeTodoBtn = document.getElementById('completeTodo')
+const viewAllProjectsBtn = document.getElementById('viewProject')
 //Modals
 const todoModal = document.getElementById('todoModal')
 const formModal = document.getElementById('formModal')
@@ -52,6 +53,7 @@ createTodoBtn.addEventListener('click', () => {
   submitTodo(todos, index)
   parseToDos(todos)
 })
-
-
+// viewAllProjectsBtn.addEventListener('click', () => {
+//   const table = document.getElementById('todoTable')
+// })
 parseToDos(todos)

@@ -70,7 +70,7 @@ function loadTodo(todo) {
 //Load html for table creation 
 function loadTable() {
   return `
-  <table class="table table-bordered mt-3 table-hover">
+  <table id="todoTable" class="table table-bordered table-hover">
     <thead>
       <th>Title</th>
       <th>Date Due</th>
@@ -86,6 +86,7 @@ function markTodo(arr, row, status) {
   if (!status) {
     arr[selectedTodoIndex(row)].status = true
     crossOut(row)
+
   } else {
     arr[selectedTodoIndex(row)].status = false
     uncross(row)
@@ -94,11 +95,15 @@ function markTodo(arr, row, status) {
 }
 //Table UI
 function crossOut(row) {
+  row.classList.remove('table-danger')
+  row.classList.toggle('table-success')
   row.classList.add('crossed-out')
 }
 function uncross(row) {
+  row.classList.toggle('table-success')
   row.classList.remove('crossed-out')
 }
+
 //Delete todo
 function deleteTodo(arr, row) {
   const index = selectedTodoIndex(row)
@@ -157,7 +162,7 @@ const updateViewModalContent = (modal, todo, todoIndex) => {
   } else {
     completeTodoBtn.classList.remove('btn-outline-danger');
     completeTodoBtn.classList.add('btn-outline-success');
-    completeTodoBtn.textContent = "Completed";
+    completeTodoBtn.textContent = "Complete";
     modalDueDate.classList.remove('text-success');
     modalDueDate.classList.add('text-danger');
   }
