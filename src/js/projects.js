@@ -18,7 +18,7 @@ const getProject = (project, todo) => {
   return project[todoProject]
 }
 function generateProjectOptions(modal, projects) {
-  const selectElement = modal.querySelector('#projectSelect') 
+  const selectElement = modal.querySelector('#project') 
   //Generate select options for each project
   projects.forEach((project) => {
     const projectName = project.name

@@ -8,7 +8,8 @@ function getFormData(title, description, date, project) {
   return { 
     title: todoTitle,
     description: todoDescription,
-    dueDate: todoDueDate
+    dueDate: todoDueDate,
+    project: todoProject
   }
 }
 //Get row and index given a button

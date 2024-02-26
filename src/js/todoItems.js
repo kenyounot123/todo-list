@@ -50,13 +50,14 @@ const selectedTodoIndex = (row) => {
 
 //Adding new todo through form submission
 function submitTodo(arr, index = null) {
-  const formValues = getFormData(title, description, date)
+  const formValues = getFormData(title, description, date, project)
   if (arr[index] !== undefined) { 
     arr[index].title = formValues.title
     arr[index].description = formValues.description
     arr[index].dueDate = formValues.dueDate
+    arr[index].project = formValues.project
   } else {
-    const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate)
+    const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate, formValues.project)
     arr.push(newTodo)
   }
   populateStorage('todos', JSON.stringify(arr))
