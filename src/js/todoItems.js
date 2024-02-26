@@ -1,5 +1,5 @@
 import { getFormData, formatDate, clearFormInputs, datePassed, populateStorage, clearInnerHtml } from "./miscellaneous";
-
+import { addTodoToProject } from "./projects";
 
 //Todo Factory 
 const todoFactory = (title, description, dueDate, project = null) => {
@@ -11,11 +11,13 @@ const todoFactory = (title, description, dueDate, project = null) => {
 }
 
 //Take in a list of all todo objects and append it to the DOM 
+// Can take in Project = { [todos] } 
+// Need a way to append todo objects to designated project
 const parseToDos = (arr) => {
   clearTodosIfNeeded();
   appendTodoRows(arr);
 };
-
+//Create table row elements for todos
 function createTodoRow(todo, index) {
   const tableRow = document.createElement('tr')
   tableRow.classList.add('row-btn')
@@ -31,6 +33,7 @@ function createTodoRow(todo, index) {
   tableRow.innerHTML = loadTodo(todo)
   return tableRow
 }
+//Append row elements to the table
 const appendTodoRows = (arr) => {
   const table = document.getElementById('todo-content');
   arr.forEach((todo, index) => {
@@ -49,7 +52,7 @@ const selectedTodoIndex = (row) => {
 } 
 
 //Adding new todo through form submission
-function submitTodo(arr, index = null) {
+function submitTodo(arr, projects, index = null) {
   const formValues = getFormData(title, description, date, project)
   if (arr[index] !== undefined) { 
     arr[index].title = formValues.title
@@ -58,6 +61,8 @@ function submitTodo(arr, index = null) {
     arr[index].project = formValues.project
   } else {
     const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate, formValues.project)
+    addTodoToProject(projects, formValues.project, newTodo)
+    console.log(projects)
     arr.push(newTodo)
   }
   populateStorage('todos', JSON.stringify(arr))

@@ -6,7 +6,7 @@ import '../scss/styles.scss'
 import { parseToDos, selectedToDo, deleteTodo, markTodo, submitTodo, updateEditModalFormContent, updateViewModalContent } from './todoItems.js'
 import { findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
-import { projectFactory, generateProjectOptions, submitProject, displayProjects } from './projects.js';
+import { projectFactory, generateProjectOptions, submitProject, displayProjects, addTodoToProject } from './projects.js';
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
@@ -19,7 +19,8 @@ const todoModal = document.getElementById('todoModal')
 const formModal = document.getElementById('formModal')
 //Web Storage API
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
-let projects = JSON.parse(localStorage.getItem('projects')) || [ projectFactory('Home', todos) ];
+let projects = JSON.parse(localStorage.getItem('projects')) || [ projectFactory('Home', []) ];
+console.log(todos)
 console.log(projects)
 // Event listener for showing the view modal
 if (todoModal) {
@@ -46,6 +47,7 @@ deleteTodoBtn.addEventListener('click', () => {
   const { row, rowIndex } = findRowAndIndexOfButton(deleteTodoBtn)
   deleteTodo(todos, row)
   parseToDos(todos)
+
 })
 completeTodoBtn.addEventListener('click', () => {
   const { row, rowIndex } = findRowAndIndexOfButton(completeTodoBtn)
@@ -54,7 +56,7 @@ completeTodoBtn.addEventListener('click', () => {
 })
 createTodoBtn.addEventListener('click', () => {
   const index = createTodoBtn.getAttribute('data-index')
-  submitTodo(todos, index)
+  submitTodo(todos, projects, index)
   parseToDos(todos)
 })
 viewAllProjectsBtn.addEventListener('click', () => {
@@ -65,4 +67,5 @@ projectSubmitBtn.addEventListener('click', () => {
   const projectNameValue = projectName.value
   submitProject(projects, projectNameValue)
 });
+
 parseToDos(todos)
