@@ -64,5 +64,7 @@ function clearFormInputs() {
 function populateStorage(key,value) {
   localStorage.setItem(key,value)
 }
-
-export { getFormData, formatDate, clearFormInputs, findRowAndIndexOfButton, datePassed, populateStorage }
+function clearInnerHtml(element) {
+  element.innerHTML = ""
+}
+export { getFormData, formatDate, clearFormInputs, findRowAndIndexOfButton, datePassed, populateStorage, clearInnerHtml }

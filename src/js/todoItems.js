@@ -1,4 +1,4 @@
-import { getFormData, formatDate, clearFormInputs, datePassed, populateStorage } from "./miscellaneous";
+import { getFormData, formatDate, clearFormInputs, datePassed, populateStorage, clearInnerHtml } from "./miscellaneous";
 
 
 //Todo Factory 
@@ -115,14 +115,11 @@ function deleteTodo(arr, row) {
   arr.splice(index, 1)
   populateStorage('todos', JSON.stringify(arr))
 }
-//Clear the table so we can input new entries
-function clearTodos(div) {
-  div.innerHTML = ''
-}
+
 function clearTodosIfNeeded() {
   const table = document.getElementById('todo-content');
   if (table !== null) {
-    clearTodos(table);
+    clearInnerHtml(table);
   } else {
     const contentContainer = document.getElementById('todo-list-main-content');
     contentContainer.innerHTML += loadTable();

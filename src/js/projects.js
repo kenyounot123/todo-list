@@ -1,18 +1,31 @@
-import { populateStorage, clearFormInputs } from "./miscellaneous"
+import { populateStorage, clearFormInputs, clearInnerHtml } from "./miscellaneous"
 //Project Factory 
-const projectFactory = (name, todo) => {
+const projectFactory = (name, todo = null) => {
   return { name, todos: [todo] }
 }
+//Add or edit project 
 const submitProject = (arr, name) => {
-  const newProject = { 'name': name }
+  const newProject = projectFactory(name)
   arr.push(newProject)
   populateStorage('projects', JSON.stringify(arr))
   clearFormInputs()
 }
-
+//Display projects to DOM
+function displayProjects(arr) {
+  const todoContent = document.getElementById('todo-list-main-content')
+  const projectContent = document.getElementById('project-main-content')
+  clearInnerHtml(todoContent)
+  clearInnerHtml(projectContent)
+  arr.forEach((project) => {
+    console.log(projectContent)
+    projectContent.innerHTML += loadProject(project)
+    todoContent.append(projectContent)
+  });
+}
+//Project html creation
 const loadProject = (currentProject) => {
   return `
-  <button class="container col-5 mt-5 btn btn-info">
+  <button class="project-btn col-md btn btn-info">
     <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> ${currentProject.name}
   </button>
   `
@@ -21,6 +34,7 @@ const getProject = (project, todo) => {
   const todoProject = todo.project
   return project[todoProject]
 }
+//Generate project options for todo form
 function generateProjectOptions(modal, projects) {
   const selectElement = modal.querySelector('#project') 
   //Generate select options for each project
@@ -35,4 +49,4 @@ function generateProjectOptions(modal, projects) {
     selectElement.append(option)
   })
 }
-export { loadProject, generateProjectOptions, submitProject } 
+export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory } 

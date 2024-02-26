@@ -6,7 +6,7 @@ import '../scss/styles.scss'
 import { parseToDos, selectedToDo, deleteTodo, markTodo, submitTodo, updateEditModalFormContent, updateViewModalContent } from './todoItems.js'
 import { findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
-import { generateProjectOptions, loadProject, submitProject } from './projects.js';
+import { projectFactory, generateProjectOptions, submitProject, displayProjects } from './projects.js';
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
@@ -19,7 +19,7 @@ const todoModal = document.getElementById('todoModal')
 const formModal = document.getElementById('formModal')
 //Web Storage API
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
-let projects = JSON.parse(localStorage.getItem('projects')) || [{'name': 'Home'}];
+let projects = JSON.parse(localStorage.getItem('projects')) || [ projectFactory('Home', todos) ];
 console.log(projects)
 // Event listener for showing the view modal
 if (todoModal) {
@@ -58,13 +58,7 @@ createTodoBtn.addEventListener('click', () => {
   parseToDos(todos)
 })
 viewAllProjectsBtn.addEventListener('click', () => {
-  const content = document.getElementById('todo-list-main-content')
-  content.innerHTML = ""
-  projects.forEach((project) => {
-    const div = document.createElement('div')
-    div.innerHTML = loadProject(project)
-    content.append(div)
-  });
+  displayProjects(projects)
 })
 projectSubmitBtn.addEventListener('click', () => {
   const projectName = document.querySelector('#projectName')
