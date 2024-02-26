@@ -1,15 +1,19 @@
+import { populateStorage, clearFormInputs } from "./miscellaneous"
 //Project Factory 
 const projectFactory = (name, todo) => {
   return { name, todos: [todo] }
 }
-const addProject = (arr, name) => {
-  arr.push()
+const submitProject = (arr, name) => {
+  const newProject = { 'name': name }
+  arr.push(newProject)
+  populateStorage('projects', JSON.stringify(arr))
+  clearFormInputs()
 }
 
 const loadProject = (currentProject) => {
   return `
   <button class="container col-5 mt-5 btn btn-info">
-    <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> ${currentProject.name} Project
+    <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> ${currentProject.name}
   </button>
   `
 }
@@ -24,11 +28,11 @@ function generateProjectOptions(modal, projects) {
     const projectName = project.name
     const option = document.createElement('option')
     option.value = projectName
-    option.textContent = projectName + ' project'
+    option.textContent = projectName
     if (projectName === 'Home') {
       option.selected = true;
     }
     selectElement.append(option)
   })
 }
-export { loadProject, generateProjectOptions } 
+export { loadProject, generateProjectOptions, submitProject } 

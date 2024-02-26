@@ -56,7 +56,13 @@ function clearFormInputs() {
     input.value = '';
   });
   const textArea = document.querySelector('textarea')
-  textArea.value = '';
+  if (textArea !== null) {
+    textArea.value = '';
+  }
+  
+}
+function populateStorage(key,value) {
+  localStorage.setItem(key,value)
 }
 
-export { getFormData, formatDate, clearFormInputs, findRowAndIndexOfButton, datePassed }
+export { getFormData, formatDate, clearFormInputs, findRowAndIndexOfButton, datePassed, populateStorage }

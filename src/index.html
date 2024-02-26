@@ -7,6 +7,26 @@
   </head>
   <body>
     <!-- Modal -->
+    <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="projectModalLabel">New Project</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="modal-body">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="projectName" type="text" placeholder="Project Name">
+              <label for="projectName">Project Name</label>
+            </div>
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="projectSubmitBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Add Project</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -63,15 +83,18 @@
           <div class="col col-lg-9 col-xl-7">
             <div class="card rounded-3 shadow">
               <h1 class="text-center my-3">To Do List</h1>
-                <div class="text-center m-4">
-                  <button id="addNewBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
-                    Add New To Do
-                  </button>
-                  <button id="viewProject" class="btn btn-secondary">View all projects</button>
-                </div>
+              <div class="text-center m-4">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+                  Add New To Do
+                </button>
+                <button id="viewProject" class="btn btn-secondary">View all projects</button>
+                <button id="newProjectBtn" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#projectModal">
+                  Add New Project
+                </button>
+              </div>
               <div id="todo-list-main-content" class="card-body p-5">
                 <button class="container col-5 mt-5 btn btn-info">
-                  <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> Home Project
+                  <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> Home
                 </button>
               </div>
             </div>

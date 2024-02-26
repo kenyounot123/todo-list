@@ -1,4 +1,4 @@
-import { getFormData, formatDate, clearFormInputs, datePassed } from "./miscellaneous";
+import { getFormData, formatDate, clearFormInputs, datePassed, populateStorage } from "./miscellaneous";
 
 
 //Todo Factory 
@@ -129,9 +129,6 @@ function clearTodosIfNeeded() {
   }
 };
 //Add to local storage
-function populateStorage(key,value) {
-  localStorage.setItem(key,value)
-}
 function todoStatus(todo) {
   if (todo.status === true) {
     return 'Completed'
