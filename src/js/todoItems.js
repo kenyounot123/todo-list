@@ -2,8 +2,12 @@ import { getFormData, formatDate, clearFormInputs, datePassed } from "./miscella
 
 
 //Todo Factory 
-const todoFactory = (title, description, dueDate) => {
-  return { title, description, dueDate, status: false }
+const todoFactory = (title, description, dueDate, project = null) => {
+  return { title, 
+    description, 
+    dueDate,
+    status: false,
+    project }
 }
 
 //Take in a list of all todo objects and append it to the DOM 

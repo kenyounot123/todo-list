@@ -23,6 +23,8 @@
               <textarea class="form-control" id="description" type="text" placeholder="Description"></textarea>
               <label for="description">Description</label>
             </div>
+            <select id="projectSelect" class="form-select mb-3" aria-label="Default select example">
+            </select>
             <div class="form-floating mb-3">
               <input class="form-control" id="date" type="date" placeholder="Date">
               <label for="date">Due Date</label>
@@ -62,15 +64,15 @@
             <div class="card rounded-3 shadow">
               <h1 class="text-center my-3">To Do List</h1>
                 <div class="text-center m-4">
-                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+                  <button id="addNewBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
                     Add New To Do
                   </button>
                   <button id="viewProject" class="btn btn-secondary">View all projects</button>
                 </div>
-                <button class="container col-5 mt-5 btn btn-info">
-                  <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> Current Project
-                </button>
               <div id="todo-list-main-content" class="card-body p-5">
+                <button class="container col-5 mt-5 btn btn-info">
+                  <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> Home Project
+                </button>
               </div>
             </div>
           </div>

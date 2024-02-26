@@ -1,9 +1,10 @@
 import { formatDistance } from "date-fns";
 //Return an object containing values for each form input
-function getFormData(title, description, date) {
+function getFormData(title, description, date, project) {
   const todoTitle = title.value
   const todoDescription = description.value
   const todoDueDate = date.value
+  const todoProject = project.value 
   return { 
     title: todoTitle,
     description: todoDescription,
