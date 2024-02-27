@@ -6,7 +6,7 @@ import '../scss/styles.scss'
 import { parseToDos, selectedToDo, deleteTodo, markTodo, submitTodo, updateEditModalFormContent, updateViewModalContent } from './todoItems.js'
 import { clearInnerHtml, findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
-import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject } from './projects.js';
+import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject, createCurrentProjectDisplay } from './projects.js';
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
@@ -14,7 +14,7 @@ const completeTodoBtn = document.getElementById('completeTodo')
 const viewAllProjectsBtn = document.getElementById('viewProject')
 const projectSubmitBtn = document.getElementById('projectSubmitBtn')
 const content = document.getElementById('todo-list-main-content')
-const projectContent = document.getElementById('project-main-content')
+
 //Modals
 const todoModal = document.getElementById('todoModal')
 const formModal = document.getElementById('formModal')
@@ -60,7 +60,14 @@ createTodoBtn.addEventListener('click', () => {
   parseToDos(todos)
 })
 viewAllProjectsBtn.addEventListener('click', () => {
-  displayProjects(projects)
+  clearInnerHtml(content)
+  let projectSectionContainer = document.createElement('div')
+  projectSectionContainer.classList.add('row', 'gap-3')
+  const allProjectElements = displayProjects(projects)
+  allProjectElements.forEach((element) => {
+    projectSectionContainer.innerHTML += element
+    content.append(projectSectionContainer)
+  })
 })
 projectSubmitBtn.addEventListener('click', () => {
   const projectName = document.querySelector('#projectName')
@@ -71,13 +78,18 @@ content.addEventListener('click', (e) => {
   let projectName = ''
   if (e.target.classList.contains('project-btn')) {
     projectName = e.target.textContent.trim()
-    console.log(projectName)
   } else if (e.target.nodeName === 'IMG' && e.target.nextSibling.parentElement.classList.contains('project-btn')) {
     projectName = e.target.nextSibling.parentElement.textContent.trim()
   } else {
     return;
   }
-  clearInnerHtml(projectContent)
-  parseToDos(getProject(projects, projectName).todos)
+  const currentProject = getProject(projects, projectName)
+  clearInnerHtml(content)
+  const currentProjectDisplay = createCurrentProjectDisplay(currentProject)
+  content.append(currentProjectDisplay)
+  parseToDos(currentProject.todos)
 })
+
+const currentProjectDisplay = createCurrentProjectDisplay(homeProject)
+content.append(currentProjectDisplay)
 parseToDos(homeProject.todos)

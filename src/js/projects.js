@@ -24,16 +24,13 @@ const addTodoToProject = (arr, name, todo) => {
 //   const projectTodos = project.todos
 //   projectTodos.pop(projectIndex) 
 // }
-//Display projects to DOM
+//Returns a list of all loaded project htmls
 function displayProjects(arr) {
-  const todoContent = document.getElementById('todo-list-main-content')
-  const projectContent = document.getElementById('project-main-content')
-  clearInnerHtml(todoContent)
-  clearInnerHtml(projectContent)
+  let elements = []
   arr.forEach((project) => {
-    projectContent.innerHTML += loadProject(project)
-    todoContent.append(projectContent)
+    elements.push(loadProject(project))
   });
+  return elements
 }
 //Project html creation
 const loadProject = (currentProject) => {
@@ -66,8 +63,18 @@ function generateProjectOptions(modal, projects) {
     selectElement.append(option)
   })
 }
-//Generate current project folder to DOM 
-function currentProjectFolder(projects) {
-
+function createCurrentProjectDisplay(project) {
+  const currentProjectDisplay = document.createElement('div')
+  currentProjectDisplay.classList.add('row', 'gap-3')
+  currentProjectDisplay.innerHTML += loadCurrentProjectDisplay(project)
+  return currentProjectDisplay;
 }
-export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject } 
+//Generate current project folder to DOM 
+function loadCurrentProjectDisplay(project) {
+  return `
+    <button id="currentProject" class="col-3 ms-3 btn btn-info">
+      <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> ${project.name}
+    </button>
+  `
+}
+export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject, createCurrentProjectDisplay } 
