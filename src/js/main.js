@@ -4,24 +4,24 @@ import * as bootstrap from 'bootstrap'
 import '../scss/styles.scss'
 
 import { parseToDos, selectedToDo, deleteTodo, markTodo, submitTodo, updateEditModalFormContent, updateViewModalContent } from './todoItems.js'
-import { findRowAndIndexOfButton } from './miscellaneous.js';
+import { clearInnerHtml, findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
-import { projectFactory, generateProjectOptions, submitProject, displayProjects, addTodoToProject } from './projects.js';
+import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject } from './projects.js';
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
 const completeTodoBtn = document.getElementById('completeTodo')
 const viewAllProjectsBtn = document.getElementById('viewProject')
-const newProjectBtn = document.getElementById('newProjectBtn')
 const projectSubmitBtn = document.getElementById('projectSubmitBtn')
+const content = document.getElementById('todo-list-main-content')
+const projectContent = document.getElementById('project-main-content')
 //Modals
 const todoModal = document.getElementById('todoModal')
 const formModal = document.getElementById('formModal')
 //Web Storage API
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
-let projects = JSON.parse(localStorage.getItem('projects')) || [ projectFactory('Home', []) ];
-console.log(todos)
-console.log(projects)
+let projects = JSON.parse(localStorage.getItem('projects')) || projectFactory('Home', []) ;
+const homeProject = projects[0]
 // Event listener for showing the view modal
 if (todoModal) {
   todoModal.addEventListener('show.bs.modal', event => {
@@ -67,5 +67,17 @@ projectSubmitBtn.addEventListener('click', () => {
   const projectNameValue = projectName.value
   submitProject(projects, projectNameValue)
 });
-
-parseToDos(todos)
+content.addEventListener('click', (e) => {
+  let projectName = ''
+  if (e.target.classList.contains('project-btn')) {
+    projectName = e.target.textContent.trim()
+    console.log(projectName)
+  } else if (e.target.nodeName === 'IMG' && e.target.nextSibling.parentElement.classList.contains('project-btn')) {
+    projectName = e.target.nextSibling.parentElement.textContent.trim()
+  } else {
+    return;
+  }
+  clearInnerHtml(projectContent)
+  parseToDos(getProject(projects, projectName).todos)
+})
+parseToDos(homeProject.todos)

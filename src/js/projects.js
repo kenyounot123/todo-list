@@ -5,10 +5,6 @@ const projectFactory = (name, todo = []) => {
 }
 //Add or edit project 
 const submitProject = (arr, name) => {
-  // const projectIndex = findProjectIndex(arr, name)
-  // if (projectIndex !== -1) {
-  //   const project = getProject(arr, projectIndex)
-  // }
   const newProject = projectFactory(name)
   arr.push(newProject)
   populateStorage('projects', JSON.stringify(arr))
@@ -16,8 +12,7 @@ const submitProject = (arr, name) => {
 }
 //Append todo to project on todo creation 
 const addTodoToProject = (arr, name, todo) => {
-  const projectIndex = findProjectIndex(arr, name)
-  const project = getProject(arr, projectIndex)
+  const project = getProject(arr, name)
   const projectTodos = project.todos
   projectTodos.push(todo) 
   populateStorage('projects', JSON.stringify(arr))
@@ -48,7 +43,8 @@ const loadProject = (currentProject) => {
   </button>
   `
 }
-const getProject = (projects, index) => {
+const getProject = (projects, name) => {
+  const index = findProjectIndex(projects, name)
   return projects[index]
 }
 const findProjectIndex = (projects, name) => {
@@ -70,4 +66,8 @@ function generateProjectOptions(modal, projects) {
     selectElement.append(option)
   })
 }
-export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject } 
+//Generate current project folder to DOM 
+function currentProjectFolder(projects) {
+
+}
+export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject } 

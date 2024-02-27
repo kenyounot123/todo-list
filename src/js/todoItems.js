@@ -11,8 +11,6 @@ const todoFactory = (title, description, dueDate, project = null) => {
 }
 
 //Take in a list of all todo objects and append it to the DOM 
-// Can take in Project = { [todos] } 
-// Need a way to append todo objects to designated project
 const parseToDos = (arr) => {
   clearTodosIfNeeded();
   appendTodoRows(arr);
