@@ -41,6 +41,7 @@ const loadProject = (currentProject) => {
   `
 }
 const getProject = (projects, name) => {
+  name = name.trim();
   const index = findProjectIndex(projects, name)
   return projects[index]
 }
@@ -48,7 +49,7 @@ const findProjectIndex = (projects, name) => {
   return projects.findIndex(project => project.name === name); 
 }
 //Generate project options for todo form
-function generateProjectOptions(modal, projects) {
+function generateProjectOptions(modal, projects, currentProject) {
   const selectElement = modal.querySelector('#project') 
   clearInnerHtml(selectElement)
   //Generate select options for each project
@@ -57,12 +58,18 @@ function generateProjectOptions(modal, projects) {
     const option = document.createElement('option')
     option.value = projectName
     option.textContent = projectName
-    if (projectName === 'Home') {
+    if (projectName === currentProject.name) {
       option.selected = true;
     }
     selectElement.append(option)
   })
 }
+function getCurrentProjectDisplayName() {
+  const currentProjectBtn = document.querySelector('#currentProject')
+  const projectName = currentProjectBtn.textContent
+  return projectName
+}
+//Create and append current project to DOM for display
 function createCurrentProjectDisplay(project) {
   const currentProjectDisplay = document.createElement('div')
   currentProjectDisplay.classList.add('row', 'gap-3')
@@ -77,4 +84,4 @@ function loadCurrentProjectDisplay(project) {
     </button>
   `
 }
-export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject, createCurrentProjectDisplay } 
+export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName } 

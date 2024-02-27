@@ -6,7 +6,7 @@ import '../scss/styles.scss'
 import { parseToDos, selectedToDo, deleteTodo, markTodo, submitTodo, updateEditModalFormContent, updateViewModalContent } from './todoItems.js'
 import { clearInnerHtml, findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
-import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject, createCurrentProjectDisplay } from './projects.js';
+import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName } from './projects.js';
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
@@ -26,19 +26,21 @@ const homeProject = projects[0]
 if (todoModal) {
   todoModal.addEventListener('show.bs.modal', event => {
     const row = event.relatedTarget;
+    const currentProject = getProject(projects, getCurrentProjectDisplayName())
     const todoIndex = row.getAttribute('data-index');
-    const todo = selectedToDo(todos, row);
+    const todo = currentProject.todos[todoIndex]
     updateViewModalContent(todoModal, todo, todoIndex);
   });
 }
 
 // Event listener for showing the edit modal
 formModal.addEventListener('show.bs.modal', event => {
-  generateProjectOptions(formModal, projects)
+  const currentProject = getProject(projects, getCurrentProjectDisplayName())
+  generateProjectOptions(formModal, projects, currentProject)
   const btn = event.relatedTarget;
   const todoIndex = btn.getAttribute('data-index');
   if (todoIndex !== null) {
-    const todo = todos[todoIndex];
+    const todo = currentProject.todos[todoIndex];
     updateEditModalFormContent(formModal, todo, todoIndex);
   }
 });
