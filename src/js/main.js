@@ -6,7 +6,7 @@ import '../scss/styles.scss'
 import { parseToDos, selectedToDo, deleteTodo, markTodo, submitTodo, updateEditModalFormContent, updateViewModalContent } from './todoItems.js'
 import { clearInnerHtml, findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
-import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName, saveChanges } from './projects.js';
+import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName, saveChanges, deleteProject } from './projects.js';
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
@@ -14,6 +14,7 @@ const completeTodoBtn = document.getElementById('completeTodo')
 const viewAllProjectsBtn = document.getElementById('viewProject')
 const projectSubmitBtn = document.getElementById('projectSubmitBtn')
 const content = document.getElementById('todo-list-main-content')
+const projectDeleteBtn = document.querySelector('#deleteProject')
 
 //Modals
 const todoModal = document.getElementById('todoModal')
@@ -31,8 +32,9 @@ completeTodoBtn.addEventListener('click', handleCompleteTodo);
 createTodoBtn.addEventListener('click', handleCreateTodo);
 viewAllProjectsBtn.addEventListener('click', handleViewAllProjects);
 projectSubmitBtn.addEventListener('click', handleProjectSubmit);
+content.addEventListener('click', handleContentClick);
 
-
+initialize();
 
 function handleViewModal(event) {
   const row = event.relatedTarget;
@@ -87,32 +89,43 @@ function handleViewAllProjects() {
     content.append(projectSectionContainer);
   });
 }
-
+function handleProjectDelete(e) {
+  clearInnerHtml(content);
+  deleteProject(projects, e.target.getAttribute('data-project'))
+}
 function handleProjectSubmit() {
   const projectName = document.querySelector('#projectName');
   const projectNameValue = projectName.value;
   submitProject(projects, projectNameValue);
 }
-content.addEventListener('click', (e) => {
-  let projectName = ''
+//Handle events for clicking project folders
+
+function handleContentClick(e) {
+  if (e.target.id === 'deleteProject') {
+    handleProjectDelete(e);
+  } else {
+    handleProjectSelection(e);
+  }
+}
+
+function handleProjectSelection(e) {
+  let projectName = '';
   if (e.target.classList.contains('project-btn')) {
-    projectName = e.target.textContent.trim()
+    projectName = e.target.textContent.trim();
   } else if (e.target.nodeName === 'IMG' && e.target.nextSibling.parentElement.classList.contains('project-btn')) {
-    projectName = e.target.nextSibling.parentElement.textContent.trim()
+    projectName = e.target.nextSibling.parentElement.textContent.trim();
   } else {
     return;
   }
-  const currentProject = getProject(projects, projectName)
-  clearInnerHtml(content)
-  const currentProjectDisplay = createCurrentProjectDisplay(currentProject)
-  content.append(currentProjectDisplay)
-  parseToDos(currentProject.todos)
-})
+  const currentProject = getProject(projects, projectName);
+  clearInnerHtml(content);
+  const currentProjectDisplay = createCurrentProjectDisplay(currentProject);
+  content.append(currentProjectDisplay);
+  parseToDos(currentProject.todos);
+}
 
 function initialize() {
   const currentProjectDisplay = createCurrentProjectDisplay(homeProject);
   content.append(currentProjectDisplay);
   parseToDos(homeProject.todos);
 }
-
-initialize();

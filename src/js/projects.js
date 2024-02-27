@@ -21,13 +21,11 @@ const addTodoToProject = (arr, name, todo) => {
   projectTodos.push(todo) 
   populateStorage('projects', JSON.stringify(arr))
 }
-// Remove todo from project on todo deletion 
-// const deleteTodoFromProject = (arr, name, todo) => {
-//   const projectIndex = findProjectIndex(arr, name)
-//   const project = getProject(arr, projectIndex)
-//   const projectTodos = project.todos
-//   projectTodos.pop(projectIndex) 
-// }
+const deleteProject = (projects, name) => {
+  const index = findProjectIndex(projects, name)
+  projects.splice(index, 1)
+  populateStorage('projects', JSON.stringify(projects))
+}
 //Returns a list of all loaded project htmls
 function displayProjects(arr) {
   let elements = []
@@ -77,11 +75,22 @@ function getCurrentProjectDisplayName() {
     return 'Home'
   }
 }
+function loadDeleteProjectBtn(name) {
+  const deleteBtn = document.createElement('button')
+  deleteBtn.classList.add('col-auto', 'btn', 'btn-outline-danger', 'me-3')
+  deleteBtn.textContent = 'Delete Project'
+  deleteBtn.setAttribute('id', 'deleteProject')
+  deleteBtn.setAttribute('data-project', name)
+  return deleteBtn
+}
 //Create and append current project to DOM for display
 function createCurrentProjectDisplay(project) {
   const currentProjectDisplay = document.createElement('div')
-  currentProjectDisplay.classList.add('row', 'gap-3')
+  currentProjectDisplay.classList.add('row', 'justify-content-between')
   currentProjectDisplay.innerHTML += loadCurrentProjectDisplay(project)
+  if (project.name !== 'Home') {
+    currentProjectDisplay.append(loadDeleteProjectBtn(project.name))
+  }
   return currentProjectDisplay;
 }
 //Generate current project folder to DOM 
@@ -92,4 +101,4 @@ function loadCurrentProjectDisplay(project) {
     </button>
   `
 }
-export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName, saveChanges } 
+export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName, saveChanges, deleteProject } 
