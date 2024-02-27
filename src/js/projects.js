@@ -10,6 +10,10 @@ const submitProject = (arr, name) => {
   populateStorage('projects', JSON.stringify(arr))
   clearFormInputs()
 }
+//Save changes to storage
+const saveChanges = (arr) => {
+  populateStorage('projects', JSON.stringify(arr))
+}
 //Append todo to project on todo creation 
 const addTodoToProject = (arr, name, todo) => {
   const project = getProject(arr, name)
@@ -66,8 +70,12 @@ function generateProjectOptions(modal, projects, currentProject) {
 }
 function getCurrentProjectDisplayName() {
   const currentProjectBtn = document.querySelector('#currentProject')
-  const projectName = currentProjectBtn.textContent
-  return projectName
+  if (currentProjectBtn !== null) {
+    const projectName = currentProjectBtn.textContent
+    return projectName
+  } else {
+    return 'Home'
+  }
 }
 //Create and append current project to DOM for display
 function createCurrentProjectDisplay(project) {
@@ -84,4 +92,4 @@ function loadCurrentProjectDisplay(project) {
     </button>
   `
 }
-export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName } 
+export { loadProject, generateProjectOptions, submitProject, displayProjects, projectFactory, addTodoToProject, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName, saveChanges } 

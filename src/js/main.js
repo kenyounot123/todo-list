@@ -6,7 +6,7 @@ import '../scss/styles.scss'
 import { parseToDos, selectedToDo, deleteTodo, markTodo, submitTodo, updateEditModalFormContent, updateViewModalContent } from './todoItems.js'
 import { clearInnerHtml, findRowAndIndexOfButton } from './miscellaneous.js';
 import { formatDistance } from "date-fns";
-import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName } from './projects.js';
+import { projectFactory, generateProjectOptions, submitProject, displayProjects, getProject, createCurrentProjectDisplay, getCurrentProjectDisplayName, saveChanges } from './projects.js';
 //Buttons 
 const createTodoBtn = document.getElementById('form-submit')
 const deleteTodoBtn = document.getElementById('deleteTodo')
@@ -22,60 +22,77 @@ const formModal = document.getElementById('formModal')
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 let projects = JSON.parse(localStorage.getItem('projects')) || [projectFactory('Home', [])] ;
 const homeProject = projects[0]
-// Event listener for showing the view modal
-if (todoModal) {
-  todoModal.addEventListener('show.bs.modal', event => {
-    const row = event.relatedTarget;
-    const currentProject = getProject(projects, getCurrentProjectDisplayName())
-    const todoIndex = row.getAttribute('data-index');
-    const todo = currentProject.todos[todoIndex]
-    updateViewModalContent(todoModal, todo, todoIndex);
-  });
+
+
+todoModal && todoModal.addEventListener('show.bs.modal', handleViewModal);
+formModal && formModal.addEventListener('show.bs.modal', handleEditModal);
+deleteTodoBtn.addEventListener('click', handleDeleteTodo);
+completeTodoBtn.addEventListener('click', handleCompleteTodo);
+createTodoBtn.addEventListener('click', handleCreateTodo);
+viewAllProjectsBtn.addEventListener('click', handleViewAllProjects);
+projectSubmitBtn.addEventListener('click', handleProjectSubmit);
+
+
+
+function handleViewModal(event) {
+  const row = event.relatedTarget;
+  const currentProject = getProject(projects, getCurrentProjectDisplayName());
+  const todoIndex = row.getAttribute('data-index');
+  const todo = currentProject.todos[todoIndex];
+  updateViewModalContent(todoModal, todo, todoIndex);
 }
 
-// Event listener for showing the edit modal
-formModal.addEventListener('show.bs.modal', event => {
-  const currentProject = getProject(projects, getCurrentProjectDisplayName())
-  generateProjectOptions(formModal, projects, currentProject)
+function handleEditModal(event) {
+  const currentProject = getProject(projects, getCurrentProjectDisplayName());
+  generateProjectOptions(formModal, projects, currentProject);
   const btn = event.relatedTarget;
   const todoIndex = btn.getAttribute('data-index');
   if (todoIndex !== null) {
     const todo = currentProject.todos[todoIndex];
     updateEditModalFormContent(formModal, todo, todoIndex);
   }
-});
-//Add event listeners for modal buttons
-deleteTodoBtn.addEventListener('click', () => {
-  const { row, rowIndex } = findRowAndIndexOfButton(deleteTodoBtn)
-  deleteTodo(todos, row)
-  parseToDos(homeProject.todos)
+}
 
-})
-completeTodoBtn.addEventListener('click', () => {
-  const { row, rowIndex } = findRowAndIndexOfButton(completeTodoBtn)
-  const todo = todos[rowIndex]
-  markTodo(todos, row, todo.status)
-})
-createTodoBtn.addEventListener('click', () => {
-  const index = createTodoBtn.getAttribute('data-index')
-  submitTodo(todos, projects, index)
-  parseToDos(homeProject.todos)
-})
-viewAllProjectsBtn.addEventListener('click', () => {
-  clearInnerHtml(content)
-  let projectSectionContainer = document.createElement('div')
-  projectSectionContainer.classList.add('row', 'gap-3')
-  const allProjectElements = displayProjects(projects)
+function handleDeleteTodo() {
+  const { row, rowIndex } = findRowAndIndexOfButton(deleteTodoBtn);
+  const currentProject = getProject(projects, getCurrentProjectDisplayName());
+  deleteTodo(currentProject.todos, row);
+  saveChanges(projects);
+  parseToDos(currentProject.todos);
+}
+
+function handleCompleteTodo() {
+  const { row, rowIndex } = findRowAndIndexOfButton(completeTodoBtn);
+  const currentProject = getProject(projects, getCurrentProjectDisplayName());
+  const todo = currentProject.todos[rowIndex];
+  markTodo(currentProject.todos, row, todo.status);
+  saveChanges(projects);
+}
+
+function handleCreateTodo() {
+  const index = createTodoBtn.getAttribute('data-index');
+  const currentProject = getProject(projects, getCurrentProjectDisplayName());
+  submitTodo(currentProject.todos, projects, index);
+  saveChanges(projects);
+  parseToDos(currentProject.todos);
+}
+
+function handleViewAllProjects() {
+  clearInnerHtml(content);
+  const projectSectionContainer = document.createElement('div');
+  projectSectionContainer.classList.add('row', 'gap-3');
+  const allProjectElements = displayProjects(projects);
   allProjectElements.forEach((element) => {
-    projectSectionContainer.innerHTML += element
-    content.append(projectSectionContainer)
-  })
-})
-projectSubmitBtn.addEventListener('click', () => {
-  const projectName = document.querySelector('#projectName')
-  const projectNameValue = projectName.value
-  submitProject(projects, projectNameValue)
-});
+    projectSectionContainer.innerHTML += element;
+    content.append(projectSectionContainer);
+  });
+}
+
+function handleProjectSubmit() {
+  const projectName = document.querySelector('#projectName');
+  const projectNameValue = projectName.value;
+  submitProject(projects, projectNameValue);
+}
 content.addEventListener('click', (e) => {
   let projectName = ''
   if (e.target.classList.contains('project-btn')) {
@@ -91,6 +108,11 @@ content.addEventListener('click', (e) => {
   content.append(currentProjectDisplay)
   parseToDos(currentProject.todos)
 })
-const currentProjectDisplay = createCurrentProjectDisplay(homeProject)
-content.append(currentProjectDisplay)
-parseToDos(homeProject.todos)
+
+function initialize() {
+  const currentProjectDisplay = createCurrentProjectDisplay(homeProject);
+  content.append(currentProjectDisplay);
+  parseToDos(homeProject.todos);
+}
+
+initialize();
