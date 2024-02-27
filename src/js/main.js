@@ -20,7 +20,7 @@ const todoModal = document.getElementById('todoModal')
 const formModal = document.getElementById('formModal')
 //Web Storage API
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
-let projects = JSON.parse(localStorage.getItem('projects')) || projectFactory('Home', []) ;
+let projects = JSON.parse(localStorage.getItem('projects')) || [projectFactory('Home', [])] ;
 const homeProject = projects[0]
 // Event listener for showing the view modal
 if (todoModal) {
@@ -46,7 +46,7 @@ formModal.addEventListener('show.bs.modal', event => {
 deleteTodoBtn.addEventListener('click', () => {
   const { row, rowIndex } = findRowAndIndexOfButton(deleteTodoBtn)
   deleteTodo(todos, row)
-  parseToDos(todos)
+  parseToDos(homeProject.todos)
 
 })
 completeTodoBtn.addEventListener('click', () => {
@@ -57,7 +57,7 @@ completeTodoBtn.addEventListener('click', () => {
 createTodoBtn.addEventListener('click', () => {
   const index = createTodoBtn.getAttribute('data-index')
   submitTodo(todos, projects, index)
-  parseToDos(todos)
+  parseToDos(homeProject.todos)
 })
 viewAllProjectsBtn.addEventListener('click', () => {
   clearInnerHtml(content)
@@ -89,7 +89,6 @@ content.addEventListener('click', (e) => {
   content.append(currentProjectDisplay)
   parseToDos(currentProject.todos)
 })
-
 const currentProjectDisplay = createCurrentProjectDisplay(homeProject)
 content.append(currentProjectDisplay)
 parseToDos(homeProject.todos)

@@ -60,7 +60,6 @@ function submitTodo(arr, projects, index = null) {
   } else {
     const newTodo = todoFactory(formValues.title, formValues.description, formValues.dueDate, formValues.project)
     addTodoToProject(projects, formValues.project, newTodo)
-    console.log(projects)
     arr.push(newTodo)
   }
   populateStorage('todos', JSON.stringify(arr))

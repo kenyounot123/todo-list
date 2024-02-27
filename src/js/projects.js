@@ -17,7 +17,7 @@ const addTodoToProject = (arr, name, todo) => {
   projectTodos.push(todo) 
   populateStorage('projects', JSON.stringify(arr))
 }
-//Remove todo from project on todo deletion 
+// Remove todo from project on todo deletion 
 // const deleteTodoFromProject = (arr, name, todo) => {
 //   const projectIndex = findProjectIndex(arr, name)
 //   const project = getProject(arr, projectIndex)
@@ -35,7 +35,7 @@ function displayProjects(arr) {
 //Project html creation
 const loadProject = (currentProject) => {
   return `
-  <button class="project-btn col-auto btn btn-info">
+  <button class="project-btn ms-3 col-auto btn btn-info">
     <img id="folder-icon" src="./assets/folder.svg" alt="Folder Icon"> ${currentProject.name}
   </button>
   `
